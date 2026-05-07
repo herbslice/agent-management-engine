@@ -11,7 +11,7 @@ if [ ! -x /usr/local/bin/hermes ]; then
     sudo install -d -o root -g root -m 755 /usr/local/share/uv/python
     sudo install -d -o root -g root -m 755 /usr/local/share/uv/bin
 
-    curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh \
+    curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | \
         sudo env \
             UV_PYTHON_INSTALL_DIR=/usr/local/share/uv/python \
             UV_PYTHON_BIN_DIR=/usr/local/share/uv/bin \
