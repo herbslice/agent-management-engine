@@ -50,11 +50,6 @@ ensure_permissions() {
 
 # Script
 
-AGENT=$1
-if [ "$AGENT" = "agentd" ]; then
-    AGENT_IS_AGENTD=true
-fi
-
 if ! id "$AGENT" &>/dev/null; then
     echo "New user: $AGENT"
     adduser --disabled-password --gecos "" --shell /bin/bash "$AGENT"
@@ -66,11 +61,6 @@ if ! is_password_locked "$AGENT"; then
     echo "Locking password for $AGENT"
     passwd -l "$AGENT"
 fi
-
-# NOTE: profile settings should be owned by agentd or root if they should never change
-# TODO: fix
-#chown $AGENT:$AGENT /home/$AGENT/.bashrc /home/$AGENT/.profile
-#chmod 644 /home/$AGENT/.bashrc /home/$AGENT/.profile
 
 if ! getent group agents > /dev/null; then
     echo "Creating 'agents' group"
