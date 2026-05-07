@@ -82,17 +82,16 @@ if [ ! -f "$KEY" ]; then
 fi
 ensure_permissions "$KEY.pub" "$AGENT" "$AGENT" 644
 
-# TODO: fix name, implement service file
-# WARNING: agentd doesn't get new permissions until restarted
-#systemctl restart agentd-manager.service 2>/dev/null
+# check for system install of hermes
+if [ ! -x /usr/local/bin/hermes ] || ! sudo -u "$agent" /usr/local/bin/hermes --help >/dev/null 2>&1; then
+    bash install-system.sh
+fi
 
-# install hermes as service
-
+# ensure Hermes is properly configured
 loginctl enable-linger "$AGENT"
-
 sudo -iu "$AGENT"
-
-curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
-
 mkdir -p ~/workspace	
 hermes config set terminal.cwd ~/workspace
+# TODO: install gateway
+# TODO: install custom service file
+#systemctl restart agentd-manager.service 2>/dev/null
