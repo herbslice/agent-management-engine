@@ -13,8 +13,10 @@ if [ $# -ne 1 ]; then
 fi
 
 if [ "$EUID" -ne 0 ]; then
-    exec sudo "$0" "$@"
+    exec sudo bash "$0" "$@"
 fi
+
+AGENT=$1
 
 # Functions
 
@@ -83,7 +85,8 @@ fi
 ensure_permissions "$KEY.pub" "$AGENT" "$AGENT" 644
 
 # check for system install of hermes
-if [ ! -x /usr/local/bin/hermes ] || ! sudo -u "$agent" /usr/local/bin/hermes --help >/dev/null 2>&1; then
+if [ ! -x /usr/local/bin/hermes ] || ! sudo -u "$AGENT" /usr/local/bin/hermes --help >/dev/null 2>&1; then
+    echo "Hermes not detected, installing..."
     bash install-system.sh
 fi
 
