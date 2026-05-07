@@ -92,9 +92,10 @@ fi
 
 # ensure Hermes is properly configured
 loginctl enable-linger "$AGENT"
-sudo -iu "$AGENT"
-mkdir -p ~/workspace	
-hermes config set terminal.cwd ~/workspace
+# syntax here is to prevent premature expansion of "~/"
+runuser -u $AGENT -- bash -c 'mkdir -p ~/workspace'
+runuser -u $AGENT -- bash -c 'hermes config set terminal.cwd ~/workspace'
+
 # TODO: install gateway
 # TODO: install custom service file
 #systemctl restart agentd-manager.service 2>/dev/null
